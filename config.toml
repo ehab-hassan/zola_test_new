@@ -1,4 +1,4 @@
-base_url = "https://ehab-hassan.github.io/"
+base_url = "https://ehab-hassan.github.io/zola_test_new/"
 title = "Isaac Clayton"
 description = "A cozy little corner of the web."
 generate_feed = true
