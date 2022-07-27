@@ -2,17 +2,17 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
 	<title>Isaac Clayton</title>
 	<subtitle>A cozy little corner of the web.</subtitle>
-	<link href="https://slightknack.dev/atom.xml" rel="self" type="application/atom+xml"/>
-  <link href="https://slightknack.dev"/>
+	<link href="https://ehab-hassan.github.io/atom.xml" rel="self" type="application/atom+xml"/>
+  <link href="https://ehab-hassan.github.io/"/>
 	<generator uri="https://www.getzola.org/">Zola</generator>
 	<updated>2022-07-22T00:00:00+00:00</updated>
-	<id>https://slightknack.dev/atom.xml</id>
+	<id>https://ehab-hassan.github.io/atom.xml</id>
 	<entry xml:lang="en">
 		<title>Dealing with Cyclic Data in Rust, Part I</title>
 		<published>2022-07-22T00:00:00+00:00</published>
 		<updated>2022-07-22T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://slightknack.dev/blog/rust-cycles/" type="text/html"/>
-		<id>https://slightknack.dev/blog/rust-cycles/</id>
+		<link rel="alternate" href="https://ehab-hassan.github.io/blog/rust-cycles/" type="text/html"/>
+		<id>https://ehab-hassan.github.io/blog/rust-cycles/</id>
 		<content type="html">&lt;blockquote&gt;
 &lt;p&gt;Or, a &lt;em&gt;GhostCell Deep Dive&lt;&#x2F;em&gt;. &lt;&#x2F;p&gt;
 &lt;p&gt;In this two-part series, we build &lt;em&gt;GhostCell&lt;&#x2F;em&gt; from first principles. In &lt;em&gt;Part I&lt;&#x2F;em&gt; we go over the underlying theory required to understand GhostCell. This post’s been sitting on my hard drive for about 9 months, so I’ve decided to bite the bullet, split what I’ve written in two, and hit publish on &lt;em&gt;Part I&lt;&#x2F;em&gt;. Hope you enjoy!&lt;&#x2F;p&gt;
@@ -29,7 +29,7 @@
 &lt;p&gt;Rust’s ownership model essentially determines the &lt;em&gt;liveness&lt;&#x2F;em&gt; of data at compile time, built on the concept of &lt;em&gt;owned&lt;&#x2F;em&gt; and &lt;em&gt;borrowed&lt;&#x2F;em&gt; data. This model ensures memory safety with little to no runtime cost—so before we get started with GhostCell, I think we should start by addressing &lt;em&gt;ownership&lt;&#x2F;em&gt;.&lt;&#x2F;p&gt;
 &lt;h1 id=&quot;ownership&quot;&gt;Ownership&lt;&#x2F;h1&gt;
 &lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;Note:&lt;&#x2F;strong&gt; This is a deep dive, so we do start with the basics. If you’d like, you can &lt;a href=&quot;https:&#x2F;&#x2F;slightknack.dev&#x2F;blog&#x2F;rust-cycles&#x2F;#subtyping&quot;&gt;skip to the next section&lt;&#x2F;a&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Note:&lt;&#x2F;strong&gt; This is a deep dive, so we do start with the basics. If you’d like, you can &lt;a href=&quot;https:&#x2F;&#x2F;ehab-hassan.github.io&#x2F;blog&#x2F;rust-cycles&#x2F;#subtyping&quot;&gt;skip to the next section&lt;&#x2F;a&gt;.&lt;&#x2F;p&gt;
 &lt;&#x2F;blockquote&gt;
 &lt;p&gt;Newbies to Rust often find themselves ‘fighting the borrow checker.’ (We’ve all been there). In Rust, each bit of data has a single owner which is responsible for &lt;em&gt;dropping&lt;&#x2F;em&gt; (i.e. freeing) that data when it goes out of scope:&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;rust&quot; style=&quot;background-color:#212121;color:#eeffff;&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;&lt;span style=&quot;font-style:italic;color:#c792ea;&quot;&gt;let&lt;&#x2F;span&gt;&lt;span&gt; x &lt;&#x2F;span&gt;&lt;span style=&quot;color:#89ddff;&quot;&gt;= &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#c3e88d;&quot;&gt;Hi&lt;&#x2F;span&gt;&lt;span style=&quot;color:#89ddff;&quot;&gt;&amp;quot;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#82aaff;&quot;&gt;to_string&lt;&#x2F;span&gt;&lt;span style=&quot;color:#89ddff;&quot;&gt;(); &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#4a4a4a;&quot;&gt;&#x2F;&#x2F; x owns &amp;quot;Hi&amp;quot;
@@ -354,7 +354,7 @@
 &lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;Aside:&lt;&#x2F;strong&gt; Reference counting usually incurs &lt;strong&gt;less&lt;&#x2F;strong&gt; of a cost in Rust than in other languages. Why? Because Rust’s borrow checker is so darn smart, in many situations one can usually get away with passing around a &lt;em&gt;reference&lt;&#x2F;em&gt; to a &lt;code&gt;Rc&lt;&#x2F;code&gt;’d pointer—i.e. &lt;code&gt;&amp;amp;Rc&amp;lt;T&amp;gt;&lt;&#x2F;code&gt;—rather than increasing the reference count with each call.&lt;&#x2F;p&gt;
 &lt;&#x2F;blockquote&gt;
-&lt;p&gt;&lt;code&gt;Arc&lt;&#x2F;code&gt; and &lt;code&gt;Rc&lt;&#x2F;code&gt; are only half of the story: these two managed pointers are &lt;em&gt;immutable&lt;&#x2F;em&gt;. When data types are immutable, it’s impossible to build anything that isn’t &lt;a href=&quot;https:&#x2F;&#x2F;slightknack.dev&#x2F;blog&#x2F;rust-cycles&#x2F;#inductive-datatypes&quot;&gt;inductive&lt;&#x2F;a&gt;: no cyclical references allowed. We need some way to inject mutability into our multiple-owner shared immutable references.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;code&gt;Arc&lt;&#x2F;code&gt; and &lt;code&gt;Rc&lt;&#x2F;code&gt; are only half of the story: these two managed pointers are &lt;em&gt;immutable&lt;&#x2F;em&gt;. When data types are immutable, it’s impossible to build anything that isn’t &lt;a href=&quot;https:&#x2F;&#x2F;ehab-hassan.github.io&#x2F;blog&#x2F;rust-cycles&#x2F;#inductive-datatypes&quot;&gt;inductive&lt;&#x2F;a&gt;: no cyclical references allowed. We need some way to inject mutability into our multiple-owner shared immutable references.&lt;&#x2F;p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;TODO: RefCell and RwLock&lt;&#x2F;p&gt;
 &lt;&#x2F;blockquote&gt;
@@ -493,8 +493,8 @@
 		<title>Building a Rust Mentality</title>
 		<published>2022-07-21T00:00:00+00:00</published>
 		<updated>2022-07-21T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://slightknack.dev/blog/shift/" type="text/html"/>
-		<id>https://slightknack.dev/blog/shift/</id>
+		<link rel="alternate" href="https://ehab-hassan.github.io/blog/shift/" type="text/html"/>
+		<id>https://ehab-hassan.github.io/blog/shift/</id>
 		<content type="html">&lt;p&gt;What really helped me begin to &lt;em&gt;grok&lt;&#x2F;em&gt; how Rust really worked was working towards building an understanding of how its &lt;em&gt;compiler&lt;&#x2F;em&gt; works.&lt;&#x2F;p&gt;
 &lt;span id=&quot;continue-reading&quot;&gt;&lt;&#x2F;span&gt;&lt;h1 id=&quot;sensible-restrictions&quot;&gt;Sensible Restrictions&lt;&#x2F;h1&gt;
 &lt;p&gt;Rust, at it’s core, is a programming language of &lt;em&gt;restrictions&lt;&#x2F;em&gt;. These restrictions exist for good reason. Upon encountering a restriction, however, it’s common to attempt to find the easiest work-around, rather than understanding the &lt;em&gt;why&lt;&#x2F;em&gt; the restriction exists in the first place.&lt;&#x2F;p&gt;
@@ -517,8 +517,8 @@
 		<title>Late Night Conversations about Nothing in Particular</title>
 		<published>2022-07-15T00:00:00+00:00</published>
 		<updated>2022-07-15T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://slightknack.dev/blog/late/" type="text/html"/>
-		<id>https://slightknack.dev/blog/late/</id>
+		<link rel="alternate" href="https://ehab-hassan.github.io/blog/late/" type="text/html"/>
+		<id>https://ehab-hassan.github.io/blog/late/</id>
 		<content type="html">&lt;h2 id=&quot;the-beginning-of-the-end-of-today&quot;&gt;The Beginning of the End (of Today)&lt;&#x2F;h2&gt;
 &lt;p&gt;As I write this today, it’s tomorrow.&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;and-we-re-talking-about-school&quot;&gt;And… We’re talking about school?&lt;&#x2F;h2&gt;
@@ -654,8 +654,8 @@
 		<title>Traits as implicit conversion</title>
 		<published>2022-02-28T00:00:00+00:00</published>
 		<updated>2022-02-28T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://slightknack.dev/passerine/traits-as/" type="text/html"/>
-		<id>https://slightknack.dev/passerine/traits-as/</id>
+		<link rel="alternate" href="https://ehab-hassan.github.io/passerine/traits-as/" type="text/html"/>
+		<id>https://ehab-hassan.github.io/passerine/traits-as/</id>
 		<content type="html">&lt;p&gt;The joy of writing a &lt;a rel=&quot;noopener nofollow&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;passerine.io&quot;&gt;new programming language&lt;&#x2F;a&gt; is coming up with novel ideas and seeing if they stick. &lt;&#x2F;p&gt;
 &lt;p&gt;The challenge I’m attempting to solve stems from dealing with different types of objects that share common structure or behavior. For this reason I’ve been thinking a lot about how to rectify open&#x2F;closed enumerations, traits, and type constructors.&lt;&#x2F;p&gt;
 &lt;p&gt;Traditional object-oriented languages deal with this through the use of inheritance. For example since both a &lt;code&gt;Wizard&lt;&#x2F;code&gt; and a &lt;code&gt;Person&lt;&#x2F;code&gt; have a &lt;code&gt;name&lt;&#x2F;code&gt;, they may both inherit from a single &lt;code&gt;Named&lt;&#x2F;code&gt; class. In Java, we may write this as:&lt;&#x2F;p&gt;
@@ -1195,8 +1195,8 @@
 		<title>Sketchnoting: a spontaneous but needed reflection</title>
 		<published>2022-02-11T00:00:00+00:00</published>
 		<updated>2022-02-11T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://slightknack.dev/blog/note/" type="text/html"/>
-		<id>https://slightknack.dev/blog/note/</id>
+		<link rel="alternate" href="https://ehab-hassan.github.io/blog/note/" type="text/html"/>
+		<id>https://ehab-hassan.github.io/blog/note/</id>
 		<content type="html">&lt;h1 id=&quot;preface&quot;&gt;Preface&lt;&#x2F;h1&gt;
 &lt;p&gt;Since September of last year, I’ve been chipping away at a long-form post on how to take &lt;em&gt;good&lt;&#x2F;em&gt; notes. This, sadly, is not that post—consider this post a teaser to tide you over until then.&lt;&#x2F;p&gt;
 &lt;p&gt;&lt;img src=&quot;&#x2F;content&#x2F;note-vols.jpg&quot; alt=&quot;Four filled notebooks and one new empty one.&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
@@ -1263,8 +1263,8 @@
 		<title>Predicting the technology of 2027</title>
 		<published>2022-01-04T00:00:00+00:00</published>
 		<updated>2022-01-04T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://slightknack.dev/blog/2027/" type="text/html"/>
-		<id>https://slightknack.dev/blog/2027/</id>
+		<link rel="alternate" href="https://ehab-hassan.github.io/blog/2027/" type="text/html"/>
+		<id>https://ehab-hassan.github.io/blog/2027/</id>
 		<content type="html">&lt;p&gt;The other day, I was thinking about this question:&lt;&#x2F;p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;What’s something that is not common today that you think will be really common 5 years from now?&lt;&#x2F;p&gt;
@@ -1294,8 +1294,8 @@
 		<title>Using Proof-of-Work to Manage Backpressure</title>
 		<published>2021-12-01T00:00:00+00:00</published>
 		<updated>2021-12-01T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://slightknack.dev/blog/dynamic-pow-backpressure/" type="text/html"/>
-		<id>https://slightknack.dev/blog/dynamic-pow-backpressure/</id>
+		<link rel="alternate" href="https://ehab-hassan.github.io/blog/dynamic-pow-backpressure/" type="text/html"/>
+		<id>https://ehab-hassan.github.io/blog/dynamic-pow-backpressure/</id>
 		<content type="html">&lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;Note:&lt;&#x2F;strong&gt; This is a quick piece that assumes some prior knowledge of PoW and backpressure. If you want to build up an intuition about backpressure before jumping in, you could read &lt;a rel=&quot;noopener nofollow&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;medium.com&#x2F;@jayphelps&#x2F;backpressure-explained-the-flow-of-data-through-software-2350b3e77ce7&quot;&gt;&lt;em&gt;this piece&lt;&#x2F;em&gt;&lt;&#x2F;a&gt; or &lt;a rel=&quot;noopener nofollow&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;www.tedinski.com&#x2F;2019&#x2F;03&#x2F;05&#x2F;backpressure.html&quot;&gt;&lt;em&gt;that one&lt;&#x2F;em&gt;&lt;&#x2F;a&gt;. If you’d like to learn more about PoW in the context of this article, check out &lt;a rel=&quot;noopener nofollow&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Hashcash&quot;&gt;&lt;em&gt;this article&lt;&#x2F;em&gt;&lt;&#x2F;a&gt; (and &lt;a rel=&quot;noopener nofollow&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Proof_of_work&quot;&gt;&lt;em&gt;that one as well&lt;&#x2F;em&gt;&lt;&#x2F;a&gt;).&lt;&#x2F;p&gt;
 &lt;&#x2F;blockquote&gt;
@@ -1368,8 +1368,8 @@
 		<title>Thinking about efficient backing stores for CRDTs</title>
 		<published>2021-08-02T00:00:00+00:00</published>
 		<updated>2021-08-02T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://slightknack.dev/blog/backing-crdt-store/" type="text/html"/>
-		<id>https://slightknack.dev/blog/backing-crdt-store/</id>
+		<link rel="alternate" href="https://ehab-hassan.github.io/blog/backing-crdt-store/" type="text/html"/>
+		<id>https://ehab-hassan.github.io/blog/backing-crdt-store/</id>
 		<content type="html">&lt;p&gt;A &lt;em&gt;Conflict-Free Replicated Datatype&lt;&#x2F;em&gt; is a bit like a smoothie: the same ingredients will produce the same result, regardless of the order in which they are added. In the context of, say, text editing in a distributed context, merging two documents will always succeed in a deterministic manner. In other words, A CRDT is a bit like a git repository that never has merge conflicts.&lt;&#x2F;p&gt;
 &lt;p&gt;There are many different ways to approach the construction of CRDTs, each construction having its own strengths and weaknesses. Today, we’re going to focus on creating out an efficient backing store for a particular family of algorithms known as &lt;em&gt;Replicated Growth Arrays&lt;&#x2F;em&gt; (RGA).&lt;&#x2F;p&gt;
 &lt;span id=&quot;continue-reading&quot;&gt;&lt;&#x2F;span&gt;
@@ -1482,8 +1482,8 @@
 		<title>Getting bindgen working on NixOS</title>
 		<published>2021-07-08T00:00:00+00:00</published>
 		<updated>2021-07-08T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://slightknack.dev/blog/nix-os-bindgen/" type="text/html"/>
-		<id>https://slightknack.dev/blog/nix-os-bindgen/</id>
+		<link rel="alternate" href="https://ehab-hassan.github.io/blog/nix-os-bindgen/" type="text/html"/>
+		<id>https://ehab-hassan.github.io/blog/nix-os-bindgen/</id>
 		<content type="html">&lt;blockquote&gt;
 &lt;h1 id=&quot;note&quot;&gt;Note&lt;&#x2F;h1&gt;
 &lt;p&gt;this is a collection of a set of discord messages sent on the NixOS discord server.&lt;&#x2F;p&gt;
@@ -1599,8 +1599,8 @@
 		<title>Macros, Types, and Next Steps</title>
 		<published>2021-06-01T00:00:00+00:00</published>
 		<updated>2021-06-01T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://slightknack.dev/passerine/next-steps/" type="text/html"/>
-		<id>https://slightknack.dev/passerine/next-steps/</id>
+		<link rel="alternate" href="https://ehab-hassan.github.io/passerine/next-steps/" type="text/html"/>
+		<id>https://ehab-hassan.github.io/passerine/next-steps/</id>
 		<content type="html">&lt;p&gt;Passerine is at an interesting point: we’ve established a few language features, and built this easily extensible functional core on which to base the rest of the language. We currently have two implementations of the language, one written in Rust, the other in D, and it’s imperative we set the course of the language before divergence occurs.&lt;&#x2F;p&gt;
 &lt;span id=&quot;continue-reading&quot;&gt;&lt;&#x2F;span&gt;&lt;h1 id=&quot;revisiting-macros&quot;&gt;Revisiting Macros&lt;&#x2F;h1&gt;
 &lt;p&gt;Currently, macros take the form:&lt;&#x2F;p&gt;
@@ -1886,8 +1886,8 @@
 		<title>Mirror: Hindley Milner Type Inference</title>
 		<published>2021-05-01T00:00:00+00:00</published>
 		<updated>2021-05-01T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://slightknack.dev/passerine/type-inference/" type="text/html"/>
-		<id>https://slightknack.dev/passerine/type-inference/</id>
+		<link rel="alternate" href="https://ehab-hassan.github.io/passerine/type-inference/" type="text/html"/>
+		<id>https://ehab-hassan.github.io/passerine/type-inference/</id>
 		<content type="html">&lt;blockquote&gt;
 &lt;p&gt;This is a frozen mirror of &lt;a rel=&quot;noopener nofollow&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;www.cs.cornell.edu&#x2F;courses&#x2F;cs3110&#x2F;2016fa&#x2F;l&#x2F;17-inference&#x2F;notes.html&quot;&gt;notes from Cornell’s CS3110&lt;&#x2F;a&gt;. Full disclosure, I did not write this.&lt;&#x2F;p&gt;
 &lt;&#x2F;blockquote&gt;
@@ -2327,8 +2327,8 @@ a system of equations, then solving that system to determine the types.&lt;&#x2F
 		<title>A Small Test Post for this New Blog</title>
 		<published>2021-04-30T00:00:00+00:00</published>
 		<updated>2021-04-30T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://slightknack.dev/blog/first/" type="text/html"/>
-		<id>https://slightknack.dev/blog/first/</id>
+		<link rel="alternate" href="https://ehab-hassan.github.io/blog/first/" type="text/html"/>
+		<id>https://ehab-hassan.github.io/blog/first/</id>
 		<content type="html">&lt;h1 id=&quot;hello&quot;&gt;Hello!&lt;&#x2F;h1&gt;
 &lt;p&gt;This is my first blog post.&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;rust&quot; style=&quot;background-color:#212121;color:#eeffff;&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;&lt;span style=&quot;font-style:italic;color:#4a4a4a;&quot;&gt;&#x2F;&#x2F; this is a function
@@ -2343,8 +2343,8 @@ a system of equations, then solving that system to determine the types.&lt;&#x2F
 		<title>Vaporization and Modern Memory Management</title>
 		<published>2021-02-24T00:00:00+00:00</published>
 		<updated>2021-02-24T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://slightknack.dev/passerine/vaporization/" type="text/html"/>
-		<id>https://slightknack.dev/passerine/vaporization/</id>
+		<link rel="alternate" href="https://ehab-hassan.github.io/passerine/vaporization/" type="text/html"/>
+		<id>https://ehab-hassan.github.io/passerine/vaporization/</id>
 		<content type="html">&lt;blockquote&gt;
 &lt;h2 id=&quot;note&quot;&gt;Note&lt;&#x2F;h2&gt;
 &lt;p&gt;This piece is a work in progress.&lt;&#x2F;p&gt;
@@ -2651,8 +2651,8 @@ a system of equations, then solving that system to determine the types.&lt;&#x2F
 		<title>FFIs [Were] Hard</title>
 		<published>2020-12-12T00:00:00+00:00</published>
 		<updated>2020-12-12T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://slightknack.dev/passerine/ffi-hard/" type="text/html"/>
-		<id>https://slightknack.dev/passerine/ffi-hard/</id>
+		<link rel="alternate" href="https://ehab-hassan.github.io/passerine/ffi-hard/" type="text/html"/>
+		<id>https://ehab-hassan.github.io/passerine/ffi-hard/</id>
 		<content type="html">&lt;blockquote&gt;
 &lt;h2 id=&quot;note&quot;&gt;Note&lt;&#x2F;h2&gt;
 &lt;p&gt;This post was written early on in Passerine’s development, before we had an FFI to interact with Rust. The FFI is still not fully finalized; most notably, as of writing this header, we need to still implement serde-style macros to easily interface with Rust datatypes, implement a module system to allow for external modules, and (eventually) allow for FFI interaction w&#x2F; Wasm modules for cross-platform FFI support.&lt;&#x2F;p&gt;
@@ -2713,8 +2713,8 @@ Isaac Clayton&lt;&#x2F;p&gt;
 		<title>All You Need are Coroutines and Pattern Matching</title>
 		<published>2020-07-10T00:00:00+00:00</published>
 		<updated>2020-07-10T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://slightknack.dev/passerine/all-you-need/" type="text/html"/>
-		<id>https://slightknack.dev/passerine/all-you-need/</id>
+		<link rel="alternate" href="https://ehab-hassan.github.io/passerine/all-you-need/" type="text/html"/>
+		<id>https://ehab-hassan.github.io/passerine/all-you-need/</id>
 		<content type="html">&lt;blockquote&gt;
 &lt;h2 id=&quot;note&quot;&gt;Note&lt;&#x2F;h2&gt;
 &lt;p&gt;This is an old post I wrote a while back. My opinions on the subject have changed slightly but this post has historical merit. The date is not entirely accurate, this article coincides with around the time I started seriously implementing Passerine.&lt;&#x2F;p&gt;
@@ -2869,8 +2869,8 @@ Isaac Clayton&lt;&#x2F;p&gt;
 		<title>Architecting Asynchronous Schedulers</title>
 		<published>2020-07-10T00:00:00+00:00</published>
 		<updated>2020-07-10T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://slightknack.dev/passerine/schedule/" type="text/html"/>
-		<id>https://slightknack.dev/passerine/schedule/</id>
+		<link rel="alternate" href="https://ehab-hassan.github.io/passerine/schedule/" type="text/html"/>
+		<id>https://ehab-hassan.github.io/passerine/schedule/</id>
 		<content type="html">&lt;h1 id=&quot;note&quot;&gt;Note&lt;&#x2F;h1&gt;
 &lt;p&gt;This post explores one design methodology for asynchronous schedulers in the context of a language that is maximally asynchronous, &lt;em&gt;i.e.&lt;&#x2F;em&gt; everything is executed asynchronously. This post is largely a reflection of trying to grapple with &lt;a rel=&quot;noopener nofollow&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;tokio.rs&#x2F;blog&#x2F;2019-10-scheduler&#x2F;&quot;&gt;this blog post about Tokio’s scheduler&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 &lt;span id=&quot;continue-reading&quot;&gt;&lt;&#x2F;span&gt;
@@ -2945,8 +2945,8 @@ Isaac Clayton&lt;&#x2F;p&gt;
 		<title>A Tiny Introduction to Parsers</title>
 		<published>2020-07-08T00:00:00+00:00</published>
 		<updated>2020-07-08T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://slightknack.dev/blog/parser/" type="text/html"/>
-		<id>https://slightknack.dev/blog/parser/</id>
+		<link rel="alternate" href="https://ehab-hassan.github.io/blog/parser/" type="text/html"/>
+		<id>https://ehab-hassan.github.io/blog/parser/</id>
 		<content type="html">&lt;h1 id=&quot;a-question&quot;&gt;A Question&lt;&#x2F;h1&gt;
 &lt;p&gt;The other day, someone asked how parsers worked on The Programmer’s Hangout Discord server. Here’s an an abridged version of my explanation.&lt;&#x2F;p&gt;
 &lt;span id=&quot;continue-reading&quot;&gt;&lt;&#x2F;span&gt;&lt;h1 id=&quot;my-response&quot;&gt;My Response&lt;&#x2F;h1&gt;

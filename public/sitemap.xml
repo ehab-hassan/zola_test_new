@@ -1,86 +1,86 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-        <loc>https://slightknack.dev/</loc>
+        <loc>https://ehab-hassan.github.io/</loc>
     </url>
     <url>
-        <loc>https://slightknack.dev/about/</loc>
+        <loc>https://ehab-hassan.github.io/about/</loc>
     </url>
     <url>
-        <loc>https://slightknack.dev/blog/</loc>
+        <loc>https://ehab-hassan.github.io/blog/</loc>
     </url>
     <url>
-        <loc>https://slightknack.dev/blog/2027/</loc>
+        <loc>https://ehab-hassan.github.io/blog/2027/</loc>
         <lastmod>2022-01-04</lastmod>
     </url>
     <url>
-        <loc>https://slightknack.dev/blog/backing-crdt-store/</loc>
+        <loc>https://ehab-hassan.github.io/blog/backing-crdt-store/</loc>
         <lastmod>2021-08-02</lastmod>
     </url>
     <url>
-        <loc>https://slightknack.dev/blog/dynamic-pow-backpressure/</loc>
+        <loc>https://ehab-hassan.github.io/blog/dynamic-pow-backpressure/</loc>
         <lastmod>2021-12-01</lastmod>
     </url>
     <url>
-        <loc>https://slightknack.dev/blog/first/</loc>
+        <loc>https://ehab-hassan.github.io/blog/first/</loc>
         <lastmod>2021-04-30</lastmod>
     </url>
     <url>
-        <loc>https://slightknack.dev/blog/late/</loc>
+        <loc>https://ehab-hassan.github.io/blog/late/</loc>
         <lastmod>2022-07-15</lastmod>
     </url>
     <url>
-        <loc>https://slightknack.dev/blog/nix-os-bindgen/</loc>
+        <loc>https://ehab-hassan.github.io/blog/nix-os-bindgen/</loc>
         <lastmod>2021-07-08</lastmod>
     </url>
     <url>
-        <loc>https://slightknack.dev/blog/note/</loc>
+        <loc>https://ehab-hassan.github.io/blog/note/</loc>
         <lastmod>2022-02-11</lastmod>
     </url>
     <url>
-        <loc>https://slightknack.dev/blog/parser/</loc>
+        <loc>https://ehab-hassan.github.io/blog/parser/</loc>
         <lastmod>2020-07-08</lastmod>
     </url>
     <url>
-        <loc>https://slightknack.dev/blog/rust-cycles/</loc>
+        <loc>https://ehab-hassan.github.io/blog/rust-cycles/</loc>
         <lastmod>2022-07-22</lastmod>
     </url>
     <url>
-        <loc>https://slightknack.dev/blog/shift/</loc>
+        <loc>https://ehab-hassan.github.io/blog/shift/</loc>
         <lastmod>2022-07-21</lastmod>
     </url>
     <url>
-        <loc>https://slightknack.dev/passerine/</loc>
+        <loc>https://ehab-hassan.github.io/passerine/</loc>
     </url>
     <url>
-        <loc>https://slightknack.dev/passerine/all-you-need/</loc>
+        <loc>https://ehab-hassan.github.io/passerine/all-you-need/</loc>
         <lastmod>2020-07-10</lastmod>
     </url>
     <url>
-        <loc>https://slightknack.dev/passerine/ffi-hard/</loc>
+        <loc>https://ehab-hassan.github.io/passerine/ffi-hard/</loc>
         <lastmod>2020-12-12</lastmod>
     </url>
     <url>
-        <loc>https://slightknack.dev/passerine/next-steps/</loc>
+        <loc>https://ehab-hassan.github.io/passerine/next-steps/</loc>
         <lastmod>2021-06-01</lastmod>
     </url>
     <url>
-        <loc>https://slightknack.dev/passerine/schedule/</loc>
+        <loc>https://ehab-hassan.github.io/passerine/schedule/</loc>
         <lastmod>2020-07-10</lastmod>
     </url>
     <url>
-        <loc>https://slightknack.dev/passerine/traits-as/</loc>
+        <loc>https://ehab-hassan.github.io/passerine/traits-as/</loc>
         <lastmod>2022-02-28</lastmod>
     </url>
     <url>
-        <loc>https://slightknack.dev/passerine/type-inference/</loc>
+        <loc>https://ehab-hassan.github.io/passerine/type-inference/</loc>
         <lastmod>2021-05-01</lastmod>
     </url>
     <url>
-        <loc>https://slightknack.dev/passerine/vaporization/</loc>
+        <loc>https://ehab-hassan.github.io/passerine/vaporization/</loc>
         <lastmod>2021-02-24</lastmod>
     </url>
     <url>
-        <loc>https://slightknack.dev/portal/</loc>
+        <loc>https://ehab-hassan.github.io/portal/</loc>
     </url>
 </urlset>

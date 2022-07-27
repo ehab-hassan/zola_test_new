@@ -51,7 +51,7 @@
                 
                 
                 <li>
-                    <a class="tag" href="https:&#x2F;&#x2F;slightknack.dev&#x2F;about&#x2F;">
+                    <a class="tag" href="https:&#x2F;&#x2F;ehab-hassan.github.io&#x2F;about&#x2F;">
                         
                             About
                         
@@ -60,7 +60,7 @@
                 
                 
                 <li>
-                    <a class="tag" href="https:&#x2F;&#x2F;slightknack.dev&#x2F;passerine&#x2F;">
+                    <a class="tag" href="https:&#x2F;&#x2F;ehab-hassan.github.io&#x2F;passerine&#x2F;">
                         
                             Passerine
                         
@@ -69,7 +69,7 @@
                 
                 
                 <li>
-                    <a class="tag" href="https:&#x2F;&#x2F;slightknack.dev&#x2F;blog&#x2F;">
+                    <a class="tag" href="https:&#x2F;&#x2F;ehab-hassan.github.io&#x2F;blog&#x2F;">
                         
                             Blog
                         
@@ -78,7 +78,7 @@
                 
                 
                 <li>
-                    <a class="tag" href="https:&#x2F;&#x2F;slightknack.dev&#x2F;portal&#x2F;">
+                    <a class="tag" href="https:&#x2F;&#x2F;ehab-hassan.github.io&#x2F;portal&#x2F;">
                         
                             Portal
                         
@@ -119,7 +119,7 @@
 <p>Rust’s ownership model essentially determines the <em>liveness</em> of data at compile time, built on the concept of <em>owned</em> and <em>borrowed</em> data. This model ensures memory safety with little to no runtime cost—so before we get started with GhostCell, I think we should start by addressing <em>ownership</em>.</p>
 <h1 id="ownership">Ownership</h1>
 <blockquote>
-<p><strong>Note:</strong> This is a deep dive, so we do start with the basics. If you’d like, you can <a href="https://slightknack.dev/blog/rust-cycles/#subtyping">skip to the next section</a>.</p>
+<p><strong>Note:</strong> This is a deep dive, so we do start with the basics. If you’d like, you can <a href="https://ehab-hassan.github.io/blog/rust-cycles/#subtyping">skip to the next section</a>.</p>
 </blockquote>
 <p>Newbies to Rust often find themselves ‘fighting the borrow checker.’ (We’ve all been there). In Rust, each bit of data has a single owner which is responsible for <em>dropping</em> (i.e. freeing) that data when it goes out of scope:</p>
 <pre data-lang="rust" style="background-color:#212121;color:#eeffff;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="font-style:italic;color:#c792ea;">let</span><span> x </span><span style="color:#89ddff;">= &quot;</span><span style="color:#c3e88d;">Hi</span><span style="color:#89ddff;">&quot;.</span><span style="color:#82aaff;">to_string</span><span style="color:#89ddff;">(); </span><span style="font-style:italic;color:#4a4a4a;">// x owns &quot;Hi&quot;
@@ -444,7 +444,7 @@
 <blockquote>
 <p><strong>Aside:</strong> Reference counting usually incurs <strong>less</strong> of a cost in Rust than in other languages. Why? Because Rust’s borrow checker is so darn smart, in many situations one can usually get away with passing around a <em>reference</em> to a <code>Rc</code>’d pointer—i.e. <code>&amp;Rc&lt;T&gt;</code>—rather than increasing the reference count with each call.</p>
 </blockquote>
-<p><code>Arc</code> and <code>Rc</code> are only half of the story: these two managed pointers are <em>immutable</em>. When data types are immutable, it’s impossible to build anything that isn’t <a href="https://slightknack.dev/blog/rust-cycles/#inductive-datatypes">inductive</a>: no cyclical references allowed. We need some way to inject mutability into our multiple-owner shared immutable references.</p>
+<p><code>Arc</code> and <code>Rc</code> are only half of the story: these two managed pointers are <em>immutable</em>. When data types are immutable, it’s impossible to build anything that isn’t <a href="https://ehab-hassan.github.io/blog/rust-cycles/#inductive-datatypes">inductive</a>: no cyclical references allowed. We need some way to inject mutability into our multiple-owner shared immutable references.</p>
 <blockquote>
 <p>TODO: RefCell and RwLock</p>
 </blockquote>
