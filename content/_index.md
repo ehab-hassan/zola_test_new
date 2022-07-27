@@ -4,7 +4,7 @@ sort_by = "weight"
 template = "index.html"
 +++
 
-Welcome to my cozy little corner of the web.
+Welcome to my cozy little corner of the web2.
 
 I'm Isaac Clayton, an aspiring Systems Architect interested in Reinforcement Learning, Programming Language Design, and Graphics Programming.
 
