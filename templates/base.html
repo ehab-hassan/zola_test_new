@@ -9,19 +9,19 @@
     <meta name="theme-color" content="#4d3ee6">
     <meta name="description" content="A cozy little corner of the web.">
     <title>{% if page.title %}{{ page.title }} — {% endif %}{% if section.title %}{{ section.title }} — {% endif %}Isaac Clayton</title>
-    <link rel="stylesheet" href="/reset.css">
+    <link rel="stylesheet" href="{{ get_url(path='reset.css')}}">
     </link>
-    <link rel="stylesheet" href="/base.css">
+    <link rel="stylesheet" href="{{ get_url(path='base.css')}}">
     </link>
-    <link rel="stylesheet" href="/layout.css">
+    <link rel="stylesheet" href="{{ get_url(path='layout.css')}}">
     </link>
-    <link rel="icon" type="image/png" href="/icon.png">
+    <link rel="icon" type="image/png" href="{{ get_url(path='icon.png')}}">
     <!-- <script async defer type="text/javascript"
         src="https://rawgit.com/patriciogonzalezvivo/glslCanvas/master/dist/GlslCanvas.js">
         </script> -->
-    <script type="text/javascript" src="/elasticlunr.min.js" defer></script>
-    <script type="text/javascript" src="/search_index.en.js" defer></script>
-    <script type="text/javascript" src="/search.js" defer></script>
+    <script type="text/javascript" src="{{ get_url(path='elasticlunr.min.js')}}" defer></script>
+    <script type="text/javascript" src="{{ get_url(path='search_index.en.js')}}" defer></script>
+    <script type="text/javascript" src="{{ get_url(path='search.js')}}" defer></script>
 
     <!-- maybe one day I'll bother to get these working... -->
     <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/turbolinks/5.2.0/turbolinks.js"></script> -->
