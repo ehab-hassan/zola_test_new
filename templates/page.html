@@ -1,0 +1,15 @@
+{% extends "sidebar.html" %}
+
+<!-- content block -->
+{% block content %}
+<!-- <div> -->
+<h1 class="title">{{ page.title }}</h1>
+<p class="tag">{{ page.date }}</p>
+{{ page.content | safe }}
+<!-- </div> -->
+{% endblock %}
+
+<!-- sidebar block -->
+{% block sidebar %}
+{{ macros::artbit(image=page.extra.artbit) }} 
+{% endblock%}
